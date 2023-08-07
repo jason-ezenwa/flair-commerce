@@ -19,6 +19,7 @@ app.use(authJwt()); // secures server based on jwt.
 app.use(errorHandler);
 
 const api = process.env.API_URL;
+const PORT = process.env.PORT || 3000;
 
 app.use(`${api}`, allRoutes);
 
@@ -35,7 +36,7 @@ mongoose.connect(
   console.log({ error });
 });
 
-app.listen(3000, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('App is listening...');
   console.log(api);
 });
