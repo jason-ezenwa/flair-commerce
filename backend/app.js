@@ -7,6 +7,7 @@ const cors = require('cors');
 const allRoutes = require('./routes/index');
 const authJwt = require('./utils/jwt');
 const errorHandler = require('./utils/error_handler');
+const multer = require('multer');
 
 // get env variables from .env file
 require('dotenv/config');
@@ -16,6 +17,7 @@ app.options('*', cors());
 app.use(express.json());
 app.use(morgan('tiny')); // logger
 app.use(authJwt()); // secures server based on jwt.
+//app.use(multer()) 
 app.use(errorHandler);
 
 const api = process.env.API_URL;

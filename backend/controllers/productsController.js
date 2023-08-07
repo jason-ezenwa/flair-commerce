@@ -2,6 +2,7 @@
 const Category = require('../models/category');
 const Product = require('../models/product');
 
+
 class ProductsController {
   // sends all products in products collection
   static async getAllProducts(request, response) {
@@ -45,6 +46,9 @@ class ProductsController {
 
   // create new product
   static async createNewProduct(request, response) {
+    const fileName = request.file.filename // multer filename property 
+    const imageBasePath = `${request.protocol}://${request.get('host')}/public/uploads/`; 
+    // sample: https://localhost:3000/public/uploads/
     const category = await Category.findById(request.body.categoryId);
     if (!category) {
       return response.status(404).json({ error: `category with id: ${request.body.category}, not found.` });
@@ -52,8 +56,8 @@ class ProductsController {
 
     const newProduct = new Product({
       name: request.body.name,
-      image: request.body.image,
-      images: request.body.images,
+      image: fileName,
+      images: `${imageBasePath}${fileName}`, // sample: https://localhost:3000/public/uploads/image123.jpeg
       description: request.body.description,
       richDescription: request.body.richDescription,
       brand: request.body.brand,

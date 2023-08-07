@@ -69,6 +69,7 @@ class UsersController {
       const user = await User.findOne({ email });
       // compare password provided by user with hashed password in the database.
       const validation = bcrypt.compareSync(password, user.hashedPassword);
+      console.log(validation)
       if (validation) {
         const secret = process.env.SECRET_KEY;
         const token = jwt.sign(
