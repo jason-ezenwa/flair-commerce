@@ -1,9 +1,9 @@
 // Order model
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const orderSchema = mongoose.Schema({
+const orderSchema = Schema({
   orderItemsIds: [{ // an array of orderItem Ids
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: 'OrderItem',
     required: true
@@ -45,7 +45,7 @@ const orderSchema = mongoose.Schema({
     type: Number,
   },
   userId: { // a UserId
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User'
   },
   dateOrdered: {
@@ -62,5 +62,5 @@ orderSchema.set('toJSON', {
   virtuals: true,
 });
 
-const Order = mongoose.model('Order', orderSchema, 'orders');
-module.exports = Order;
+const Order = model('Order', orderSchema, 'orders');
+export default Order;

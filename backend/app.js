@@ -1,23 +1,29 @@
-const express = require('express');
-
+import express, { json} from 'express';
 const app = express();
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const allRoutes = require('./routes/index');
-const authJwt = require('./utils/jwt');
-const errorHandler = require('./utils/error_handler');
-const multer = require('multer');
+import path from 'path';
+// ...
+
+// Construct the absolute path to the static directory
+const staticDirname = path.dirname(new URL(import.meta.url).pathname);
+
+// Serve static files from the specified directory
+app.use('/public/flair-commerce-uploads', express.static(path.join(staticDirname, 'public', 'flair-commerce-uploads'))); // path serving static files
+
+import morgan from 'morgan';
+import { connect } from 'mongoose';
+import cors from 'cors';
+import allRoutes from './routes/index.js';
+import authJwt from './utils/jwt.js';
+import errorHandler from './utils/error_handler.js';
 
 // get env variables from .env file
-require('dotenv/config');
+import 'dotenv/config';
 // middleware
 app.use(cors());
 app.options('*', cors());
-app.use(express.json());
+app.use(json());
 app.use(morgan('tiny')); // logger
 app.use(authJwt()); // secures server based on jwt.
-//app.use(multer()) 
 app.use(errorHandler);
 
 const api = process.env.API_URL;
@@ -25,7 +31,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(`${api}`, allRoutes);
 
-mongoose.connect(
+connect(
   process.env.CONNECTION_STRING,
   {
     useUnifiedTopology: true,
@@ -43,4 +49,4 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(api);
 });
 
-module.exports = app;
+export default app;

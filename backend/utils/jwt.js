@@ -1,4 +1,4 @@
-const { expressjwt } = require('express-jwt');
+import { expressjwt } from 'express-jwt';
 
 function authJwt() {
   // returns a middleware to verify JWTs.
@@ -15,12 +15,9 @@ function authJwt() {
       '/api/v1/login',
       '/api/v1/register_user',
       // specify what actions can be performed freely with the /products endpoint protected.
-      { url: '/api/v1/products', methods: ['GET', 'OPTIONS'] },
-      { url: '/api/v1/products/:id', methods: ['GET', 'OPTIONS'] },
-      { url: '/api/v1/featured_products/:count?', methods: ['GET', 'OPTIONS'] },
-      { url: '/api/v1/categories', methods: ['GET', 'OPTIONS'] },
-      { url: '/api/v1/categories/:id', methods: ['GET', 'OPTIONS'] },
-
+      { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
+      { url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS'] },,
+      { url: /\/public\/flair-commerce-uploads(.*)/, methods: ['GET', 'OPTIONS'] },
     ],
   });
   // unless is used to state which endpoints are not protected.
@@ -35,4 +32,4 @@ async function isRevoked(request, token) {
   return false;
 }
 
-module.exports = authJwt;
+export default authJwt;

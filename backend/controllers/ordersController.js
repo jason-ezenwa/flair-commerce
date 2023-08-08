@@ -1,11 +1,10 @@
 // this file contains functions for Order endpoints operations
-const OrderItem = require('../models/order-item');
-const Order = require('../models/order');
-const request = require('request');
+import OrderItem from '../models/order-item.js';
+import Order from '../models/order.js';
 
 class OrdersController {
   static async getAllOrders(request, response) {
-    const ordersList = await Order.find().populate('userId', 'name').sort({dateOrdered: -1});
+    const ordersList = await find().populate('userId', 'name').sort({dateOrdered: -1});
     // populate fills the category field with all information for the category
     // because of the reference created to the User schema.
     // name means only the name of the user should be gotten, more details can be added like name.
@@ -122,9 +121,8 @@ class OrdersController {
     const orderToBeDeleted = await Order.findById(orderId);
     if (orderToBeDeleted) {
       await orderToBeDeleted.orderItemsIds.map(async (orderItemId) => {
-        console.log('working on this orderItem, ', orderItemId)
         try {
-          await OrderItem.findByIdAndRemove(orderItemId);
+          await findByIdAndRemove(orderItemId);
         } catch (error) {
           return response.status(404).json({ error: `No orderItem with id ${orderItemId}, found.` });
         }
@@ -179,4 +177,4 @@ class OrdersController {
   }
 }
 
-module.exports = OrdersController
+export default OrdersController

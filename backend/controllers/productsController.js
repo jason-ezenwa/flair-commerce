@@ -1,6 +1,6 @@
 // this file contains functions for Product endpoints operations
-const Category = require('../models/category');
-const Product = require('../models/product');
+import Category from '../models/category.js';
+import Product from '../models/product.js';
 
 
 class ProductsController {
@@ -46,9 +46,13 @@ class ProductsController {
 
   // create new product
   static async createNewProduct(request, response) {
+    const availableFile = request.file;
+    if (!availableFile) {
+      return response.status(400).json({ error: 'no file included' });
+    }
     const fileName = request.file.filename // multer filename property 
-    const imageBasePath = `${request.protocol}://${request.get('host')}/public/uploads/`; 
-    // sample: https://localhost:3000/public/uploads/
+    const imageBasePath = `${request.protocol}://${request.get('host')}/public/flair-commerce-uploads/`; 
+    // example: https://localhost:3000/public/flair-commerce-uploads/
     const category = await Category.findById(request.body.categoryId);
     if (!category) {
       return response.status(404).json({ error: `category with id: ${request.body.category}, not found.` });
@@ -56,8 +60,7 @@ class ProductsController {
 
     const newProduct = new Product({
       name: request.body.name,
-      image: fileName,
-      images: `${imageBasePath}${fileName}`, // sample: https://localhost:3000/public/uploads/image123.jpeg
+      image: `${imageBasePath}${fileName}`, // example: https://localhost:3000/public/flair-commerce-uploads/image123.jpeg, 
       description: request.body.description,
       richDescription: request.body.richDescription,
       brand: request.body.brand,
@@ -97,12 +100,11 @@ class ProductsController {
     }
     const {productId} = request.params;
     try {
-      const updatedProduct = await Product.findByIdAndUpdate(
+      const updatedProduct = await findByIdAndUpdate(
         productId,
         {
           name: request.body.name,
           image: request.body.image,
-          images: request.body.images,
           description: request.body.description,
           richDescription: request.body.richDescription,
           brand: request.body.brand,
@@ -124,7 +126,7 @@ class ProductsController {
 
   static async countAllProducts(request, response) {
     try {
-      const productsCount = await Product.countDocuments();
+      const productsCount = await countDocuments();
       return response.status(200).json({ 'Number of products in the database': productsCount });
     } catch (error) {
       return response.status(500).send({ error: `Server error, please try again.\n Details: ${error}` });
@@ -140,12 +142,38 @@ class ProductsController {
       return response.status(404).json({ error: `category with id: ${categoryId}, not found.` });
     }
     try {
-      const productsCount = await Product.countDocuments({ categoryId: categoryId });
+      const productsCount = await countDocuments({ categoryId: categoryId });
       return response.status(200).json({ Details: `You have ${productsCount} ${category.name} products`, count: productsCount });
     } catch (error) {
       return response.status(500).send({ error: `Server error, please try again.\n Details: ${error}` });
     }
   }
+
+  // update product with its extra images
+  static async updateProductImages(request, response) {
+    const {productId} = request.params;
+    const imageFiles = request.files;
+    const imageBasePath = `${request.protocol}://${request.get('host')}/public/flair-commerce-uploads/`; 
+    let arrayOfImageStrings = [];
+    if (imageFiles) {
+      imageFiles.map((file) => {
+        console.log(file)
+        arrayOfImageStrings.push(`${imageBasePath}${file.filename}`);
+      })
+    }
+    try {
+      const updatedProduct = await findByIdAndUpdate(
+        productId,
+        {
+          images: arrayOfImageStrings,
+        },
+        { new: true }, // new: true ensures that it is the new updated version returned.
+      );
+      return response.status(200).json(updatedProduct);
+    } catch (error) {
+      return response.status(500).json({ error });
+    }
+  }
 }
 
-module.exports = ProductsController;
+export default ProductsController;

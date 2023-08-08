@@ -1,8 +1,8 @@
 // User model
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 // user collection schema
-const userSchema = mongoose.Schema({
+const userSchema = Schema({
   name: {
     type: String,
     required: true,
@@ -61,5 +61,5 @@ userSchema.set('toJSON', {
   virtuals: true,
 });
 
-const User = mongoose.model('User', userSchema, 'users');
-module.exports = User;
+const User = model('User', userSchema, 'users');
+export default User;

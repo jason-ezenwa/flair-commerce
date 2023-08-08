@@ -1,5 +1,5 @@
 // this file contains functions for Category endpoints operations
-const Category = require('../models/category');
+import Category from '../models/category.js';
 
 class CategoriesController {
   // sends all categories in categories collection
@@ -67,4 +67,4 @@ class CategoriesController {
   }
 }
 
-module.exports = CategoriesController;
+export default CategoriesController;

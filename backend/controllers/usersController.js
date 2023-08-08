@@ -1,7 +1,7 @@
 // this file contains functions for User endpoints operations
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+import bcrypt from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
+import User from '../models/user.js';
 
 // hashes user's password.
 function hashPassword(password) {
@@ -68,11 +68,11 @@ class UsersController {
     try {
       const user = await User.findOne({ email });
       // compare password provided by user with hashed password in the database.
-      const validation = bcrypt.compareSync(password, user.hashedPassword);
+      const validation = compareSync(password, user.hashedPassword);
       console.log(validation)
       if (validation) {
         const secret = process.env.SECRET_KEY;
-        const token = jwt.sign(
+        const token = jsonwebtoken.sign(
           {
             userId: user._id,
             isAdmin: user.isAdmin,
@@ -117,4 +117,4 @@ class UsersController {
   }
 }
 
-module.exports = UsersController;
+export default UsersController;

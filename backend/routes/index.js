@@ -1,11 +1,11 @@
-const express = require('express');
-const ProductsController = require('../controllers/productsController');
-const CategoriesController = require('../controllers/categoriesController');
-const UsersController = require('../controllers/usersController');
-const OrdersController = require('../controllers/ordersController');
-const upload = require('../utils/uploads');
+import { Router } from 'express';
+import ProductsController from '../controllers/productsController.js';
+import CategoriesController from '../controllers/categoriesController.js';
+import UsersController from '../controllers/usersController.js';
+import OrdersController from '../controllers/ordersController.js';
+import upload from '../utils/uploads.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/products', ProductsController.getAllProducts);
 router.get('/products/:productId', ProductsController.getProduct);
@@ -18,6 +18,7 @@ router.delete('/delete_category/:categoryId', CategoriesController.deleteCategor
 router.delete('/products/delete/:productId', ProductsController.deleteProduct);
 router.put('/categories/update:categoryId', CategoriesController.updateCategory);
 router.put('/products/update/:productId', ProductsController.updateProduct);
+router.put('/products/update-images/:productId', upload.array('images', 10), ProductsController.updateProductImages);
 router.get('/products/count', ProductsController.countAllProducts);
 router.get('/products/count/:categoryId', ProductsController.countAllProductsInCategory);
 router.post('/register_user', UsersController.createNewUser);
@@ -35,4 +36,4 @@ router.get('/total_sales', OrdersController.getTotalSales);
 router.get('/orders/count', OrdersController.countAllOrders);
 router.get('/orders/history/:userId', OrdersController.getOrderHistoryForUser);
 
-module.exports = router;
+export default router;

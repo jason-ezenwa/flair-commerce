@@ -1,8 +1,8 @@
 // product model
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 // product collection schema
-const productSchema = mongoose.Schema({
+const productSchema = Schema({
   name: {
     type: String,
     required: true,
@@ -35,7 +35,7 @@ const productSchema = mongoose.Schema({
     default: 0,
   },
   categoryId: { // a categoryId
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: 'Category',
   },
@@ -66,5 +66,5 @@ productSchema.set('toJSON', {
   virtuals: true,
 });
 
-const Product = mongoose.model('Product', productSchema, 'products');
-module.exports = Product;
+const Product = model('Product', productSchema, 'products');
+export default Product;

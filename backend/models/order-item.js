@@ -1,13 +1,13 @@
 // Order model
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const orderItemSchema = mongoose.Schema({
+const orderItemSchema = Schema({
   quantity: {
     type: Number,
     required: true,
   },
   productId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Product'
   }
 });
@@ -20,5 +20,5 @@ orderItemSchema.set('toJSON', {
   virtuals: true,
 });
 
-const OrderItem = mongoose.model('OrderItem', orderItemSchema, 'orderItems');
-module.exports = OrderItem;
+const OrderItem = model('OrderItem', orderItemSchema, 'orderItems');
+export default OrderItem;
