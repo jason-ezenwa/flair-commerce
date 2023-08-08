@@ -14,7 +14,7 @@ router.post('/products/upload', upload.single('image'), ProductsController.creat
 router.get('/categories', CategoriesController.getAllCategories);
 router.get('/categories/:categoryId', CategoriesController.getCategory);
 router.post('/categories/upload', CategoriesController.createNewCategory);
-router.delete('/delete_category/:categoryId', CategoriesController.deleteCategory);
+router.delete('/categories/delete/:categoryId', CategoriesController.deleteCategory);
 router.delete('/products/delete/:productId', ProductsController.deleteProduct);
 router.put('/categories/update:categoryId', CategoriesController.updateCategory);
 router.put('/products/update/:productId', ProductsController.updateProduct);
