@@ -1,11 +1,9 @@
 import React from "react";
-import Header from "./Header";
 import Hero from "./Hero";
-import Footer from "./Footer";
-function Home() {
+function Home() { //oh wowwww
   return (
     <div className="App">
-      <Hero/>  
+      <Hero/>
     </div>
   );
 }
