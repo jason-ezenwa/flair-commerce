@@ -1,15 +1,27 @@
 import React from "react";
-
+import { NavLink } from "react-router-dom";
 export default function Header() {
   return (
     <header>
-            <div class="logo"></div>
+            <div className="logo"></div>
             <nav id="navbar">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="shop.html">Shop</a></li>
+                    <li>
+                      <NavLink to="/">
+                        Home
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/shop">
+                        Shop
+                      </NavLink>
+                    </li>
                     <li><a href="blog.html">Blog</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li>
+                      <NavLink to="/about">
+                        About
+                      </NavLink>
+                    </li>
                 </ul>
             </nav>
             <a href="#"><i class="fa-solid fa-bag-shopping fa-lg shopping-bag-icon"></i></a>
